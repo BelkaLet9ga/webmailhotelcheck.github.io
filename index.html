@@ -1,373 +1,323 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Подтвердите, что вы человек</title>
-<style>
-  :root{
-    --bg:#0f1724;
-    --card:#0b1220;
-    --muted:#9aa6b2;
-    --accent:#2dd4bf;
-    --accent-2:#60a5fa;
-    --success:#16a34a;
-    --glass: rgba(255,255,255,0.04);
-    --radius:14px;
-  }
-  html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:
-    radial-gradient(1200px 600px at 10% 10%, rgba(96,165,250,0.06), transparent 8%),
-    radial-gradient(900px 400px at 90% 90%, rgba(45,212,191,0.05), transparent 8%),
-    var(--bg);
-    color:#e6eef6;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:28px}
-  .card{
-    width:100%;
-    max-width:520px;
-    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04);
-    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-    border-radius:var(--radius);
-    padding:28px;
-    box-sizing:border-box;
-    backdrop-filter: blur(6px);
-  }
-  h1{margin:0 0 8px;font-size:20px;letter-spacing:-0.2px}
-  p.lead{margin:0 0 18px;color:var(--muted)}
-  .slider-wrap{padding:12px;background:var(--glass);border-radius:12px;border:1px solid rgba(255,255,255,0.02)}
-  .hint{font-size:13px;color:var(--muted);margin-bottom:10px}
-  .slider{
-    position:relative;
-    height:56px;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    user-select:none;
-    -webkit-user-select:none;
-    touch-action:pan-y;
-    overflow:visible;
-  }
-  .track{
-    position:absolute;
-    left:0;right:0;top:50%;transform:translateY(-50%);
-    height:14px;border-radius:999px;background:linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-  }
-  .progress{
-    height:100%;
-    width:0%;
-    border-radius:999px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    transition: width 0.08s linear;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Human verification</title>
+  <style>
+    :root {
+      --bg: #0f1724;
+      --panel: rgba(11, 18, 32, 0.5);
+      --text: #edf2f7;
+      --muted: #a0aec0;
+      --accent: #38bdf8;
+      --accent2: #34d399;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(56,189,248,0.06), transparent 8%),
+        radial-gradient(900px 400px at 90% 90%, rgba(52,211,153,0.04), transparent 8%),
+        var(--bg);
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      width: min(520px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: var(--radius);
+      padding: 24px 20px 18px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+      backdrop-filter: blur(5px);
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+    }
+    p.lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+    .slider-shell {
+      background: rgba(255,255,255,0.015);
+      border: 1px solid rgba(255,255,255,0.015);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .slider {
+      position: relative;
+      height: 54px;
+      border-radius: 12px;
+      user-select: none;
+      touch-action: pan-y;
+    }
+    .track {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+    }
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 12px;
+      transition: width 0.08s linear;
+    }
+    .thumb {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(0, -50%);
+      height: 46px;
+      width: 46px;
+      border-radius: 10px;
+      background: #0f1724;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      z-index: 2;
+      transition: transform 120ms ease-out;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.28);
+      touch-action: none;
+    }
+    .thumb:active {
+      cursor: grabbing;
+    }
+    .thumb-inner {
+      background: linear-gradient(180deg, var(--accent), #0ea5e9);
+      height: 34px;
+      width: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #031525;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 3px 12px rgba(14,165,233,0.55);
+    }
+    .center-text {
+      position: absolute;
+      top: 50%;
+      left: 52px;
+      right: 10px;
+      transform: translateY(-50%);
+      font-size: 0.78rem;
+      color: rgba(237,242,247,0.86);
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .foot {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    .success .center-text {
+      color: #bbf7d0;
+    }
+    .success .thumb .thumb-inner {
+      background: linear-gradient(180deg, #22c55e, #15803d);
+      color: #03210c;
+    }
 
-  .thumb{
-    position:relative;
-    z-index:2;
-    height:52px;width:52px;border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-    border:1px solid rgba(255,255,255,0.04);
-    box-shadow: 0 6px 18px rgba(2,6,23,0.6), inset 0 -6px 18px rgba(255,255,255,0.02);
-    transform:translateX(0);
-    transition: transform 150ms cubic-bezier(.2,.9,.2,1);
-    touch-action:none;
-  }
-  .thumb .inner{
-    height:40px;width:40px;border-radius:10px;background:linear-gradient(180deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#04263b;font-weight:700;font-size:18px;
-    box-shadow: 0 4px 12px rgba(2,6,23,0.35);
-  }
-  .label{
-    margin-left:70px;font-weight:600;color:#0ff6ff;position:relative;z-index:1;
-    text-shadow: 0 2px 6px rgba(0,0,0,0.7);
-  }
-
-  /* Small text overlay in center */
-  .center-label{
-    position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:rgba(230,238,246,0.9);font-weight:600;pointer-events:none;font-size:15px;
-  }
-  .sub{font-size:13px;color:var(--muted);margin-top:12px;text-align:center}
-
-  /* success state */
-  .success .thumb{ transform: translateX(calc(100% - 56px)); }
-  .success .progress{ width:100% !important; }
-  .success .center-label{color:var(--success)}
-  .success .inner{background:linear-gradient(180deg,#34d399,#16a34a);}
-
-  /* accessibility focus */
-  .thumb:focus{outline:3px solid rgba(96,165,250,0.18);outline-offset:4px;border-radius:12px}
-  .kbd-hint{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
-
-  @media (max-width:420px){
-    .card{padding:18px}
-    .label{display:none}
-    .thumb{height:48px;width:48px}
-    .thumb .inner{height:36px;width:36px;font-size:16px}
-  }
-</style>
+    @media (max-width: 460px) {
+      .card { padding: 20px 16px 14px; }
+      .center-text {
+        left: 50px;
+        font-size: 0.72rem;
+      }
+      .thumb { height: 44px; width: 44px; }
+      .thumb-inner { height: 32px; width: 32px; }
+      .slider { height: 52px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="main" aria-labelledby="title">
-      <h1 id="title">Подтвердите, что вы человек</h1>
-      <p class="lead">Проведите ползунок слева направо, чтобы продолжить. Работает на телефоне и десктопе.</p>
+  <div class="card" id="card">
+    <h1>Confirm you’re human</h1>
+    <p class="lead">Drag the slider all the way to the right. This works on phones and desktops.</p>
 
-      <div class="slider-wrap" aria-hidden="false">
-        <div class="hint" id="hint">Перетащите ползунок →</div>
-
-        <div class="slider" id="slider" aria-labelledby="hint" role="application">
-          <div class="track" id="track" aria-hidden="true">
-            <div class="progress" id="progress"></div>
-          </div>
-
-          <div class="thumb" id="thumb" tabindex="0" role="button" aria-label="Перетяните, чтобы подтвердить" aria-pressed="false">
-            <div class="inner" id="thumbInner">»</div>
-          </div>
-
-          <div class="center-label" id="centerLabel">Просунуть, чтобы перейти далее</div>
-          <div class="label" id="statusLabel">Осталось: <strong id="leftPercent">100%</strong></div>
+    <div class="slider-shell">
+      <p class="hint" id="hint-text">Slide to verify →</p>
+      <div class="slider" id="slider" aria-label="Slide to verify">
+        <div class="track">
+          <div class="progress" id="progress"></div>
         </div>
-
-        <div class="kbd-hint">Можно также нажать ← и → или пробел/Enter для управления (для клавиатуры)</div>
-        <div class="sub" id="sub">Если у вас проблемы с перетаскиванием — обновите страницу или попробуйте другой браузер.</div>
+        <div class="thumb" id="thumb" role="button" aria-pressed="false" tabindex="0">
+          <div class="thumb-inner">»</div>
+        </div>
+        <div class="center-text" id="center-text">Slide to continue</div>
       </div>
     </div>
+
+    <p class="foot">If you can’t slide, refresh the page and try again.</p>
   </div>
 
-<script>
-/* ========== Настройки ========== */
-const TARGET = "https://example.com"; // <- замените на нужный URL
-const COOKIE_NAME = "human_confirmed";
-const COOKIE_MAXAGE = 7 * 24 * 3600; // 7 дней
+  <script>
+    // change this to your real destination:
+    const TARGET_URL = "https://example.com";
+    const COOKIE_NAME = "human_verified";
+    const COOKIE_AGE = 7 * 24 * 3600; // 7 days
 
-/* ========= Элементы ========= */
-const slider = document.getElementById('slider');
-const thumb = document.getElementById('thumb');
-const progressEl = document.getElementById('progress');
-const centerLabel = document.getElementById('centerLabel');
-const leftPercent = document.getElementById('leftPercent');
-const thumbInner = document.getElementById('thumbInner');
-
-let dragging = false;
-let startX = 0;
-let thumbStartOffset = 0;
-let sliderRect, thumbRect;
-let success = false;
-const finishThreshold = 0.92; // доля ширины, которую нужно пройти (0.92 = 92%)
-const animationFrame = window.requestAnimationFrame || function(f){return setTimeout(f,16)};
-const cancelFrame = window.cancelAnimationFrame || clearTimeout;
-
-/* Быстрая проверка cookie */
-function readCookie(name){
-  return document.cookie.split('; ').reduce((r,c)=>{
-    const [k,v]=c.split('=');
-    return k===name?decodeURIComponent(v):r;
-  }, '');
-}
-if (readCookie(COOKIE_NAME) === '1') {
-  // если cookie есть — редиректим сразу
-  window.location.replace(TARGET);
-}
-
-/* Утилиты для cookie */
-function setCookie(name, value, maxAgeSec){
-  const s = `${name}=${encodeURIComponent(value)}; path=/; max-age=${maxAgeSec}; SameSite=Lax`;
-  document.cookie = s;
-}
-
-/* Обновление размеров */
-function refreshRects(){
-  sliderRect = slider.getBoundingClientRect();
-  thumbRect = thumb.getBoundingClientRect();
-}
-
-/* Установить положение (0..1) */
-function setPosition(normalized){
-  normalized = Math.max(0, Math.min(1, normalized));
-  const trackWidth = sliderRect.width - thumbRect.width; // область перемещения
-  const px = normalized * trackWidth;
-  thumb.style.transform = `translateX(${px}px)`;
-  const pct = Math.round(normalized * 100);
-  progressEl.style.width = `${pct}%`;
-  leftPercent.textContent = `${100 - pct}%`;
-}
-
-/* Завершение */
-function onSuccess(){
-  if (success) return;
-  success = true;
-  document.documentElement.classList.add('success');
-  thumb.setAttribute('aria-pressed','true');
-  centerLabel.textContent = "Подтверждено — перенаправляем...";
-  // ставим cookie
-  setCookie(COOKIE_NAME, '1', COOKIE_MAXAGE);
-  // небольшой таймаут, чтобы пользователь увидел анимацию
-  setTimeout(()=> window.location.replace(TARGET), 600);
-  // вибрация на мобильных (если поддерживается)
-  if (navigator.vibrate) navigator.vibrate(40);
-}
-
-/* Сброс (если нужно) */
-function resetSlider(){
-  success = false;
-  thumb.removeAttribute('aria-pressed');
-  centerLabel.textContent = "Просунуть, чтобы перейти далее";
-  leftPercent.textContent = "100%";
-  setPosition(0);
-  document.documentElement.classList.remove('success');
-}
-
-/* Обработка начала перетаскивания */
-function pointerDown(clientX){
-  if (success) return;
-  dragging = true;
-  startX = clientX;
-  refreshRects();
-  // вычисляем стартовый смещение (на случай фокуса)
-  const transform = thumb.style.transform || '';
-  const match = transform.match(/translateX\(([-\d.]+)px\)/);
-  thumbStartOffset = match ? parseFloat(match[1]) : 0;
-  thumb.classList.add('dragging');
-}
-
-/* Обработка окончания */
-function pointerUp(){
-  if (!dragging) return;
-  dragging = false;
-  thumb.classList.remove('dragging');
-  refreshRects();
-  // если дошли до финиша — success
-  const trackWidth = sliderRect.width - thumbRect.width;
-  const currentPx = thumbStartOffset; // not used
-  // compute normalized from current transform
-  const match = (thumb.style.transform || '').match(/translateX\(([-\d.]+)px\)/);
-  const px = match ? parseFloat(match[1]) : 0;
-  const normalized = px / (sliderRect.width - thumbRect.width);
-  if (normalized >= finishThreshold) {
-    // анимация до конца
-    setPosition(1);
-    onSuccess();
-  } else {
-    // анимируем назад
-    thumb.style.transition = 'transform 300ms cubic-bezier(.22,.9,.2,1)';
-    progressEl.style.transition = 'width 300ms cubic-bezier(.22,.9,.2,1)';
-    setPosition(0);
-    setTimeout(()=>{
-      thumb.style.transition = '';
-      progressEl.style.transition = '';
-    }, 320);
-  }
-}
-
-/* Обработка движения */
-function pointerMove(clientX){
-  if (!dragging || success) return;
-  refreshRects();
-  const dx = clientX - startX;
-  const trackWidth = sliderRect.width - thumbRect.width;
-  const px = Math.max(0, Math.min(trackWidth, thumbStartOffset + dx));
-  const normalized = px / trackWidth;
-  // применяем
-  thumb.style.transform = `translateX(${px}px)`;
-  progressEl.style.width = `${Math.round(normalized*100)}%`;
-  leftPercent.textContent = `${100 - Math.round(normalized*100)}%`;
-}
-
-/* Touch / Mouse events */
-thumb.addEventListener('touchstart', e=>{
-  if (success) return;
-  const t = e.touches[0];
-  pointerDown(t.clientX);
-  e.preventDefault();
-}, {passive:false});
-
-window.addEventListener('touchmove', e=>{
-  if (!dragging) return;
-  const t = e.touches[0];
-  pointerMove(t.clientX);
-}, {passive:false});
-
-window.addEventListener('touchend', e=>{
-  if (!dragging) return;
-  pointerUp();
-}, {passive:false});
-
-thumb.addEventListener('mousedown', e=>{
-  if (success) return;
-  pointerDown(e.clientX);
-  e.preventDefault();
-});
-
-window.addEventListener('mousemove', e=>{
-  if (!dragging) return;
-  pointerMove(e.clientX);
-});
-
-window.addEventListener('mouseup', e=>{
-  if (!dragging) return;
-  pointerUp();
-});
-
-/* Keyboard support: left/right arrows, space/enter to nudge / finish
-   We'll allow arrows to move in steps, space/enter to try finish when near end.
-*/
-thumb.addEventListener('keydown', e=>{
-  if (success) return;
-  refreshRects();
-  const trackWidth = sliderRect.width - thumbRect.width;
-  // current normalized
-  const match = (thumb.style.transform || '').match(/translateX\(([-\d.]+)px\)/);
-  const px = match ? parseFloat(match[1]) : 0;
-  let normalized = px / (trackWidth || 1);
-  const step = 0.08; // 8% per arrow
-  if (e.key === 'ArrowRight' || e.key === 'Right') {
-    normalized = Math.min(1, normalized + step);
-    setPosition(normalized);
-    e.preventDefault();
-  } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
-    normalized = Math.max(0, normalized - step);
-    setPosition(normalized);
-    e.preventDefault();
-  } else if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') {
-    // если близко к финишу, считаем как успех
-    if (normalized >= finishThreshold) onSuccess();
-    else {
-      // give a nudge
-      normalized = Math.min(1, normalized + step);
-      setPosition(normalized);
+    function getCookie(name) {
+      return document.cookie.split("; ").reduce((acc, cur) => {
+        const [k, v] = cur.split("=");
+        return k === name ? decodeURIComponent(v) : acc;
+      }, "");
     }
-    e.preventDefault();
-  }
-});
 
-/* Слушаем resize чтобы обновлять координаты */
-window.addEventListener('resize', ()=> {
-  refreshRects();
-  // если уже успех — позиция фиксированная через css .success
-  if (!success) setPosition(0);
-});
+    function setCookie(name, value, maxAge) {
+      document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; max-age=" + maxAge + "; SameSite=Lax";
+    }
 
-/* Доступность: при клике по треку — переместить ползунок ближе */
-document.getElementById('track').addEventListener('click', (e)=>{
-  if (success) return;
-  refreshRects();
-  const clickX = e.clientX - sliderRect.left;
-  const trackWidth = sliderRect.width - thumbRect.width;
-  const normalized = Math.max(0, Math.min(1, (clickX - (thumbRect.width/2)) / trackWidth));
-  setPosition(normalized);
-  // если к финишу — success
-  if (normalized >= finishThreshold) onSuccess();
-});
+    // if already verified — go right away
+    if (getCookie(COOKIE_NAME) === "1") {
+      window.location.replace(TARGET_URL);
+    }
 
-/* Инициализация: старт с 0 */
-refreshRects();
-setPosition(0);
+    const slider = document.getElementById("slider");
+    const thumb = document.getElementById("thumb");
+    const progress = document.getElementById("progress");
+    const centerText = document.getElementById("center-text");
+    const card = document.getElementById("card");
 
-/* Внимание: если бот эмулирует событие touch/mouse, то он может пройти.
-   Клиентская логика повышает порог для простых краулеров, но не стопроцентна.
-*/
-</script>
+    let sliderRect, thumbRect;
+    let isDragging = false;
+    let startX = 0;
+    let startOffset = 0;
+    const COMPLETE_AT = 0.9; // 90% to complete
+    let done = false;
+
+    function measure() {
+      sliderRect = slider.getBoundingClientRect();
+      thumbRect = thumb.getBoundingClientRect();
+    }
+
+    function setPos(norm) {
+      norm = Math.max(0, Math.min(1, norm));
+      const maxX = sliderRect.width - thumbRect.width;
+      const px = norm * maxX;
+      thumb.style.transform = "translate(" + px + "px, -50%)";
+      progress.style.width = (norm * 100) + "%";
+    }
+
+    function complete() {
+      if (done) return;
+      done = true;
+      thumb.setAttribute("aria-pressed", "true");
+      centerText.textContent = "Verified! Redirecting...";
+      card.classList.add("success");
+      setCookie(COOKIE_NAME, "1", COOKIE_AGE);
+      setTimeout(() => {
+        window.location.replace(TARGET_URL);
+      }, 500);
+      if (navigator.vibrate) navigator.vibrate(35);
+    }
+
+    function pointerDown(clientX) {
+      if (done) return;
+      measure();
+      isDragging = true;
+      startX = clientX;
+      const current = (thumb.style.transform || "").match(/translate\(([-\d.]+)px/);
+      startOffset = current ? parseFloat(current[1]) : 0;
+      thumb.style.transition = "none";
+      progress.style.transition = "none";
+    }
+
+    function pointerMove(clientX) {
+      if (!isDragging || done) return;
+      const dx = clientX - startX;
+      const maxX = sliderRect.width - thumbRect.width;
+      let newX = startOffset + dx;
+      newX = Math.max(0, Math.min(maxX, newX));
+      const norm = newX / maxX;
+      thumb.style.transform = "translate(" + newX + "px, -50%)";
+      progress.style.width = (norm * 100) + "%";
+
+      if (norm >= COMPLETE_AT) {
+        setPos(1);
+        complete();
+      }
+    }
+
+    function pointerUp() {
+      if (!isDragging) return;
+      isDragging = false;
+      if (!done) {
+        // snap back
+        thumb.style.transition = "transform 0.25s ease";
+        progress.style.transition = "width 0.25s ease";
+        setPos(0);
+      }
+    }
+
+    // mouse
+    thumb.addEventListener("mousedown", e => {
+      pointerDown(e.clientX);
+      e.preventDefault();
+    });
+    window.addEventListener("mousemove", e => {
+      pointerMove(e.clientX);
+    });
+    window.addEventListener("mouseup", pointerUp);
+
+    // touch
+    thumb.addEventListener("touchstart", e => {
+      const t = e.touches[0];
+      pointerDown(t.clientX);
+    }, { passive: true });
+    window.addEventListener("touchmove", e => {
+      if (!isDragging) return;
+      const t = e.touches[0];
+      pointerMove(t.clientX);
+    }, { passive: true });
+    window.addEventListener("touchend", pointerUp);
+
+    // keyboard for accessibility
+    thumb.addEventListener("keydown", e => {
+      if (done) return;
+      if (e.key === "ArrowRight" || e.key === "Right" || e.key === "Enter" || e.key === " ") {
+        measure();
+        setPos(1);
+        complete();
+        e.preventDefault();
+      }
+    });
+
+    // initial measure
+    window.addEventListener("resize", () => {
+      // after resize, reset to start if not done
+      if (!done) {
+        measure();
+        setPos(0);
+      }
+    });
+    measure();
+    setPos(0);
+  </script>
 </body>
 </html>
